@@ -11,7 +11,7 @@ import React, { useState, useEffect, Fragment, useRef } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import dynamic from "next/dynamic";
-import { Select, Form, Input, Radio, Space } from "antd";
+import { Select, Form, Input, Radio, Space , message} from "antd";
 
 // import MDEditor from '@uiw/react-md-editor';
 import rehypeSanitize from "rehype-sanitize";
@@ -54,10 +54,12 @@ export default function youtubeApiSettings() {
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
+        message.success('Youtube api credentials updated successfully.');
         setClientid('')
         setClientSecret('')
         setPrivacy('')
         setPL('')
+        setTitle('')
       }
     })
     .catch((err) => console.log(err))
@@ -65,16 +67,7 @@ export default function youtubeApiSettings() {
   }
 
   const data = [
-    'embed the video in the tickets.',
-    'CreatedAt',
-    'updatedAt',
-    'customizable generated post status (published, draft, pending, private, trash)',
-    'limited video long and weight',
-    'import comments from the YouTube video directly to your generated blog post',
-    'Maximum/minimum title length post limitation Maximum/minimum content length post limitation',
-    'automatically generate post categories or tags from marketplace',
-    'items manually add post categories or tags to items grab videos localized by address or coordinates select source language',
-    'generate post or page YouTube video player customizations: width, height, theme color, show captions, video controls, allow full screen, loop video, auto start video, select player language',
+    
     
     
   ];
@@ -96,6 +89,7 @@ export default function youtubeApiSettings() {
               placeholder="Enter Client ID
               here......"
               name="name"
+              value={clientid}
               onChange={(e) => setClientid(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
@@ -103,6 +97,7 @@ export default function youtubeApiSettings() {
             <input
               type="text"
               name="email"
+              value={clientsecret}
               placeholder="Enter Client secret here...."
               onChange={(e) => setClientSecret(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
@@ -113,6 +108,7 @@ export default function youtubeApiSettings() {
               name="title"
               placeholder="Channel Name"
               maxLength={64}
+              value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
@@ -121,6 +117,7 @@ export default function youtubeApiSettings() {
               name="title"
               placeholder="playlist"
               maxLength={64}
+              value={pl}
               onChange={(e) => setPL(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
@@ -149,7 +146,7 @@ export default function youtubeApiSettings() {
             </button>
             </div>
             <>
-    <Divider orientation="left">Todo</Divider>
+    <Divider orientation="left">youtube api integration</Divider>
     <List
 
       bordered
