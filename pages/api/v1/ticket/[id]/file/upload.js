@@ -5,7 +5,7 @@ import { IncomingForm } from "formidable";
 import fs from "fs";
 import open from 'open'
 import { createNecessaryDirectoriesSync } from "filesac";
-import { oAuth, ytconfig,  } from "./oauth2callback";
+// import { oAuth, ytconfig,  } from "./oauth2callback";
 import youtube from "youtube-api";
 
 export const config = {
@@ -19,7 +19,7 @@ export default async function UploadFile(req, res) {
   //   const session = await getSession({ req });
   
   const { id } = req.query;
-console.log('from upload',id);
+
   const  uploadPath = `./public/storage/tickets/${id}`;
   await createNecessaryDirectoriesSync(`${uploadPath}/x`);
 
@@ -104,4 +104,3 @@ email: rakibulislam.cse21@gmail.com
     res.status(500).json({ error });
   }
 }
-export {oAuth};

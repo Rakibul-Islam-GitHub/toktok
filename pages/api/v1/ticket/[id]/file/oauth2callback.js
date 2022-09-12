@@ -14,9 +14,9 @@ import { prisma } from "../../../../../../prisma/prisma";
 // import { oAuth } from "./upload";
 
 
-export let  ytconfig = {
+// export let  ytconfig = {
     
-  }
+//   }
 
 /*
 Author worked on youtube API : Rakibul
@@ -29,10 +29,7 @@ email: rakibulislam.cse21@gmail.com
 export default async function oauth2callback (req,res) {
     
     const {filename, title, description, ticketid,path} = JSON.parse(req.query.state)
-    // let filename='test2.mp4'
-    // let title='new educational video'
-    // let description= 'test video'
-console.log('from oauth2callback', filename, title, description);
+ 
 
 
 const data=  await prisma.youtubesettings.findUnique({
