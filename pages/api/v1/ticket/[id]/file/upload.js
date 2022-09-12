@@ -5,7 +5,8 @@ import { IncomingForm } from "formidable";
 import fs from "fs";
 import open from 'open'
 import { createNecessaryDirectoriesSync } from "filesac";
-import { oAuth } from "./oauth2callback";
+import { oAuth, ytconfig,  } from "./oauth2callback";
+import youtube from "youtube-api";
 
 export const config = {
   api: {
@@ -13,11 +14,12 @@ export const config = {
   },
 };
 
+
 export default async function UploadFile(req, res) {
   //   const session = await getSession({ req });
-
+  
   const { id } = req.query;
-// console.log('from upload',id);
+console.log('from upload',id);
   const  uploadPath = `./public/storage/tickets/${id}`;
   await createNecessaryDirectoriesSync(`${uploadPath}/x`);
 
@@ -41,58 +43,43 @@ export default async function UploadFile(req, res) {
 
 const filename = f.originalFilename
         let title= fields.title
-        let description= fields.details+ ' And the ticket ID was: '+ id
+        let description= fields.details+ ' And the toktok ticket ID was: '+ id
         let ticketid= id
 
 let mimetype= f.mimetype.split('/')[0]
 if (mimetype !=='image') {
+
+  const data=  await prisma.youtubesettings.findUnique({
+    where: {id: 1}
+  })
   
-  await open(oAuth.generateAuthUrl({
-       access_type: 'offline',
-       scope: 'https://www.googleapis.com/auth/youtube.upload',
-       state: JSON.stringify({
-           filename, title, description, ticketid
-       })
-   }))
+  if (data.id) {
+     /*
+Developer worked on youtube API : Rakibul
+web: https://github.com/Rakibul-Islam-GitHub
+order: https://www.fiverr.com/rakibul_cse21
+linkedin: https://www.linkedin.com/in/rakibul21
+email: rakibulislam.cse21@gmail.com
+*/
+   
+     const oAuth =await youtube.authenticate({
+      type: 'oauth',
+      client_id: data.clientid? data.clientid : '451352924057-ca2m6d0ioeku2i153qndkkqmlf3mu58i.apps.googleusercontent.com',
+      client_secret: data.clientsecret,
+      redirect_url: 'http://localhost:3000/api/v1/ticket/1/file/oauth2callback'
+  })
+
+     open(oAuth.generateAuthUrl({
+      access_type: 'offline',
+      scope: 'https://www.googleapis.com/auth/youtube.upload',
+      state: JSON.stringify({
+          filename, title, description, ticketid
+      })
+  }))
+  }
+  
 }
        
-
-
-       
-
-
-
-
-      //  await oAuth.getToken(req.query.code, (err, tokens) => {
-      //     if(err) {
-      //         console.log(err)
-      //         return;
-      //     }
-  
-      //     oAuth.setCredentials(tokens);
-          
-          
-          
-      //     youtube.video.insert({
-      //         resource: {
-      //             snippet: {title, description},
-      //             status: {privacyStatus: 'private'}
-      //         },
-      //         part: 'snippet,status',
-      //         media: {
-      //             body: fs.createReadStream(`./storage/tickets/3/test2.mp4`)
-      //         }
-      //     }, (err,data) => {
-      //         console.log("upload Done")
-      //         process.exit();
-      //     })
-      
-      // })
-
-
-
-
-      
         try {
           await prisma.ticketFile
             .create({
@@ -117,3 +104,4 @@ if (mimetype !=='image') {
     res.status(500).json({ error });
   }
 }
+export {oAuth};

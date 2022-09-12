@@ -62,7 +62,7 @@ const handleUpload = (id) => {
       // message.success('upload successfully.');
     })
     .catch(() => {
-      message.error('file upload upload failed.');
+      message.error('file upload  failed.');
     })
     .finally(() => {
       setUploading(false);
@@ -474,7 +474,7 @@ const props = {
                           
                           createTicket();
                           setOpen(false);
-                          // handleUpload();
+                          // handleUpload(11);
                         }}
                         type="button"
                         className="w-1/2 mx-auto  inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm disabled:opacity-50 hover:bg-indigo-600 cursor-not-allowed"

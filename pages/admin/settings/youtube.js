@@ -1,3 +1,12 @@
+/*
+Developer worked on youtube API : Rakibul
+web: https://github.com/Rakibul-Islam-GitHub
+order: https://www.fiverr.com/rakibul_cse21
+linkedin: https://www.linkedin.com/in/rakibul21
+email: rakibulislam.cse21@gmail.com
+*/
+
+
 import React, { useState, useEffect, Fragment, useRef } from "react";
 import { Dialog, Transition, Listbox } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
@@ -19,14 +28,41 @@ function classNames(...classes) {
 }
 
 export default function youtubeApiSettings() {
-  const [name, setName] = useState("");
-  const [company, setCompany] = useState();
-  const [engineer, setEngineer] = useState();
-  const [email, setEmail] = useState("");
-
+ 
+  const [pl, setPL] = useState('');
+  const [clientid, setClientid] = useState('');
+  const [clientsecret, setClientSecret] = useState("");
+  const [privacy, setPrivacy] = useState("");
   const [title, setTitle] = useState("");
-  const [options, setOptions] = useState([]);
-  const [users, setUsers] = useState([]);
+  
+  async function createYTsettings() {
+    if (clientid==='' || clientsecret==='') {
+      alert('Please enter a client ID & client secret')
+      return
+    }
+   const res= await fetch("/api/v1/admin/socialsettings/youtube/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        clientid,
+        clientsecret,
+        privacy
+      }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        setClientid('')
+        setClientSecret('')
+        setPrivacy('')
+        setPL('')
+      }
+    })
+    .catch((err) => console.log(err))
+    
+  }
 
   const data = [
     'embed the video in the tickets.',
@@ -39,7 +75,7 @@ export default function youtubeApiSettings() {
     'automatically generate post categories or tags from marketplace',
     'items manually add post categories or tags to items grab videos localized by address or coordinates select source language',
     'generate post or page YouTube video player customizations: width, height, theme color, show captions, video controls, allow full screen, loop video, auto start video, select player language',
-    'compress the video before upload',
+    
     
   ];
   return (
@@ -60,7 +96,7 @@ export default function youtubeApiSettings() {
               placeholder="Enter Client ID
               here......"
               name="name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setClientid(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
 
@@ -68,7 +104,7 @@ export default function youtubeApiSettings() {
               type="text"
               name="email"
               placeholder="Enter Client secret here...."
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setClientSecret(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
 
@@ -85,22 +121,32 @@ export default function youtubeApiSettings() {
               name="title"
               placeholder="playlist"
               maxLength={64}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => setPL(e.target.value)}
               className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
             />
 
             <div className="flex justify-center mx-auto">
               <Radio.Group
                 buttonStyle="solid"
-                onChange={(e) => setPriority(e.target.value)}
+                onChange={(e) => setPrivacy(e.target.value)}
                 className="mx-auto justify-center space-x-4"
               >
-                <Radio.Button value="Low">Private</Radio.Button>
-                <Radio.Button value="Normal">public</Radio.Button>
-                <Radio.Button value="High" className="bg-red">
+                <Radio.Button value="private">Private</Radio.Button>
+                <Radio.Button value="public">public</Radio.Button>
+                <Radio.Button value="linkonly" className="bg-red">
                   link for who get it
                 </Radio.Button>
               </Radio.Group>
+            </div>
+
+            <div className="flex justify-center">
+            <button
+              onClick={createYTsettings}
+              type="button"
+              className="w-1/3 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm disabled:opacity-50 hover:bg-indigo-600"
+            >
+              Save Settings
+            </button>
             </div>
             <>
     <Divider orientation="left">Todo</Divider>

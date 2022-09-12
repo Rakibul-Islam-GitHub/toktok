@@ -23,8 +23,18 @@ async function main() {
       number: '123456789',
     },
   })
+  const youtubesettings = await prisma.youtubesettings.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      clientid: `451352924057-ca2m6d0ioeku2i153qndkkqmlf3mu58i.apps.googleusercontent.com`,
+      clientsecret: "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",
+      privacy: 'private'
+      
+    },
+  })
 
-  console.log({ admin, internal });
+  console.log({ admin, internal, youtubesettings });
 }
 
 main()

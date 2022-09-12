@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+ 
 }
 
 model User {
@@ -23,6 +23,15 @@ model User {
   tickets   Ticket[]
   file      UserFile[]
   notes     Notes[]
+}
+model Youtubesettings {
+  id           Int        @id @default(autoincrement())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+  clientid     String
+  clientsecret String
+  privacy      String
+  
 }
 
 model Ticket {
@@ -69,6 +78,8 @@ model TicketFile {
   createdAt DateTime @default(now())
   filename  String
   path      String
+  youtubeUrl     String?
+  thumbnail      String?
   ticketId  Int
   ticket    Ticket   @relation(fields: [ticketId], references: [id])
 }
